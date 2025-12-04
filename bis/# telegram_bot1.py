@@ -14,8 +14,8 @@ from aiogram.fsm.storage.memory import MemoryStorage
 import aiosqlite
 
 # ==== НАСТРОЙКИ ====
-BOT_TOKEN = "8216114774:AAHvmxCht79fVCFMnM14WqO2FOkBF5QxLx4"
-ADMIN_ID = 640876100
+BOT_TOKEN = "--------"
+ADMIN_ID = ------
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PDF_PATH = os.path.join(BASE_DIR, "presentation.pdf")
@@ -272,3 +272,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
