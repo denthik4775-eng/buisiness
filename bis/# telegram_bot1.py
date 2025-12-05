@@ -13,7 +13,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.storage.memory import MemoryStorage
 import aiosqlite
 
-# ==== НАСТРОЙКИ ====
+
 BOT_TOKEN = "--------"
 ADMIN_ID = ------
 
@@ -76,7 +76,6 @@ TEXTS = {
     "support": "💬 Связь с поддержкой\n\nНапишите нам напрямую 👇",
 }
 
-# ==== БАЗА ДАННЫХ ====
 async def init_db():
     async with aiosqlite.connect("bot_payments.db") as db:
         await db.execute("""
@@ -116,7 +115,7 @@ async def get_user_active_tariff(user_id: int):
     except:
         return None
 
-# ==== КЛАВИАТУРЫ ====
+
 def get_main_menu() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="ℹ️ О сервисе", callback_data="about")],
@@ -139,7 +138,7 @@ def get_back_to_menu() -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="🏠 Главное меню", callback_data="main_menu")]
     ])
 
-# ==== РОУТЕР ====
+
 router = Router()
 logging.basicConfig(level=logging.INFO)
 
@@ -153,12 +152,12 @@ async def cmd_start(message: Message):
     if os.path.exists(PDF_PATH):
         try:
             pdf_file = FSInputFile(PDF_PATH)
-            # Отправляем PDF БЕЗ кнопок
+     
             await message.answer_document(
                 document=pdf_file,
                 caption="📋 Презентация сервиса"
             )
-            # Отправляем меню ОТДЕЛЬНО
+     
             await message.answer("🏠 Главное меню:", reply_markup=get_main_menu())
             logging.info("✅ PDF + МЕНЮ отправлены отдельно")
             return
@@ -182,7 +181,7 @@ async def cmd_pdf(message: Message):
     else:
         await message.answer("❌ PDF не найден")
 
-# ✅ ИСПРАВЛЕННЫЕ CALLBACK - НОВОЕ СООБЩЕНИЕ ВМЕСТО EDIT
+
 @router.callback_query(F.data == "main_menu")
 async def process_main_menu(callback: CallbackQuery):
     await callback.message.answer(TEXTS["main_menu"], reply_markup=get_main_menu())
@@ -261,7 +260,6 @@ async def process_successful_payment(message: Message):
     await save_payment(message.from_user.id, tariff, amount, message.successful_payment.telegram_payment_charge_id)
     await message.answer(f"✅ {tariff} активирован!", reply_markup=get_main_menu())
 
-# ==== ЗАПУСК ====
 async def main():
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher(storage=MemoryStorage())
@@ -272,4 +270,5 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
